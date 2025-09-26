@@ -5,16 +5,7 @@
 <title>Sims 4 Draft</title>
 <style>
   body { font-family: sans-serif; text-align: center; margin: 2rem; }
-  button { margin: 0.5rem; padding: 0.5rem 1rem; font-size: 1rem; }
-  .result-card { display: inline-block; margin: 0.5rem; padding: 0.5rem; border-radius: 8px; min-width: 120px; }
-  .result-card img { width: 48px; height: 48px; display: block; margin: 0 auto 8px; }
-</style>
-</head>
-<body>
 
-<h1>Sims 4 Draft</h1>
-
-<!-- Draft Buttons -->
 button {
   margin: 0.5rem;
   padding: 1rem 2rem;       /* bigger buttons */
@@ -28,11 +19,11 @@ button {
 
 /* Add distinct colors for the Sims draft buttons */
 #draftTraitBtn {
-  background-color: #f39c12;
+  background-color: #3498db;
   color: white;
 }
 #draftAspirationBtn {
-  background-color: #3498db;
+  background-color: #f39c12;
   color: white;
 }
 #draftCareerBtn {
@@ -45,6 +36,24 @@ button:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
+
+  .result-card { display: inline-block; margin: 0.5rem; padding: 0.5rem; border-radius: 8px; min-width: 120px; }
+  .result-card img { width: 48px; height: 48px; display: block; margin: 0 auto 8px; }
+</style>
+</head>
+<body>
+
+<h1>Sims 4 Draft</h1>
+
+<!-- Draft Buttons -->
+<button id="draftTraitBtn">Draft Traits</button>
+<div id="traitResults"></div>
+
+<button id="draftAspirationBtn">Draft Aspirations</button>
+<div id="aspirationResults"></div>
+
+<button id="draftCareerBtn">Draft Careers</button>
+<div id="careerResults"></div>
 
 
 <script>
