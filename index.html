@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sims 4 Draft</title>
+<style>
+  body { font-family: sans-serif; text-align: center; margin: 2rem; }
+  button { margin: 0.5rem; padding: 0.5rem 1rem; font-size: 1rem; }
+  .result-card { display: inline-block; margin: 0.5rem; padding: 0.5rem; border-radius: 8px; min-width: 120px; }
+  .result-card img { width: 48px; height: 48px; display: block; margin: 0 auto 8px; }
+</style>
+</head>
+<body>
+
+<h1>Sims 4 Draft</h1>
+
+<!-- Draft Buttons -->
+<button id="draftTraitBtn">Draft Traits</button>
+<div id="traitResults"></div>
+
+<button id="draftAspirationBtn">Draft Aspirations</button>
+<div id="aspirationResults"></div>
+
+<button id="draftCareerBtn">Draft Careers</button>
+<div id="careerResults"></div>
+
+<script>
+// === Deck placeholders ===
+const traitsDeck = [
+  { name: "Ambitious", img: "Images/Traits/Ambitious.png" },
+  { name: "Cheerful", img: "Images/Traits/Cheerful.png" },
+  { name: "Childish", img: "Images/Traits/Childish.png" },
+  { name: "Clumsy", img: "Images/Traits/Clumsy.png" },
+  { name: "Creative", img: "Images/Traits/Creative.png" },
+  { name: "Erratic", img: "Images/Traits/Erratic.png" },
+  { name: "Genius", img: "Images/Traits/Genius.png" },
+  { name: "Gloomy", img: "Images/Traits/Gloomy.png" },
+  { name: "Goofball", img: "Images/Traits/Goofball.png" },
+  { name: "High Maintenance", img: "Images/Traits/High_Maintenance.png" },
+  { name: "Hot-Headed", img: "Images/Traits/Hot-Headed.png" },
+  { name: "Lovebug", img: "Images/Traits/Lovebug.png" },
+  { name: "Paranoid", img: "Images/Traits/Paranoid.png" },
+  { name: "Practice Makes Perfect", img: "Images/Traits/Practice_Makes_Perfect.png" },
+  { name: "Romantic", img: "Images/Traits/Romantic.png" },
+  { name: "Romantically Reserved", img: "Images/Traits/Romantically_Reserved.png" },
+  { name: "Self-Assured", img: "Images/Traits/Self-Assured.png" },
+  { name: "Squeamish", img: "Images/Traits/Squeamish.png" },
+  { name: "Unflirty", img: "Images/Traits/Unflirty.png" },
+  { name: "Art Lover", img: "Images/Traits/Art_Lover.png" },
+  { name: "Bookworm", img: "Images/Traits/Bookworm.png" },
+  { name: "Dance Machine", img: "Images/Traits/Dance_Machine.png" },
+  { name: "Foodie", img: "Images/Traits/Foodie.png" },
+  { name: "Geek", img: "Images/Traits/Geek.png" },
+  { name: "Loves Outdoors", img: "Images/Traits/Loves_Outdoors.png" },
+  { name: "Maker", img: "Images/Traits/Maker.png" },
+  { name: "Music Lover", img: "Images/Traits/Music_Lover.png" },
+  { name: "Recycle Disciple", img: "Images/Traits/Recycle_Disciple.png" },
+  { name: "Active", img: "Images/Traits/Active.png" },
+  { name: "Adventurous", img: "Images/Traits/Adventurous.png" },
+  { name: "Chased by Death", img: "Images/Traits/Chased_by_Death.png" },
+  { name: "Child of the Islands", img: "Images/Traits/Child_of_the_Islands.png" },
+  { name: "Child of the Ocean", img: "Images/Traits/Child_of_the_Ocean.png" },
+  { name: "Child of the Village", img: "Images/Traits/Child_of_the_Village.png" },
+  { name: "Disruptive", img: "Images/Traits/Disruptive.png" },
+  { name: "Freegan", img: "Images/Traits/Freegan.png" },
+  { name: "Glutton", img: "Images/Traits/Glutton.png" },
+  { name: "Green Fiend", img: "Images/Traits/Green_Fiend.png" },
+  { name: "Kleptomaniac", img: "Images/Traits/Kleptomaniac.png" },
+  { name: "Lactose Intolerant", img: "Images/Traits/Lactose_Intolerant.png" },
+  { name: "Lazy", img: "Images/Traits/Lazy.png" },
+  { name: "Macabre", img: "Images/Traits/Macabre.png" },
+  { name: "Materialistic", img: "Images/Traits/Materialistic.png" },
+  { name: "Mystical", img: "Images/Traits/Mystical.png" },
+  { name: "Neat", img: "Images/Traits/Neat.png" },
+  { name: "Overachiever", img: "Images/Traits/Overachiever.png" },
+  { name: "Perfectionist", img: "Images/Traits/Perfectionist.png" },
+  { name: "Rancher", img: "Images/Traits/Rancher.png" },
+  { name: "Skeptical", img: "Images/Traits/Skeptical.png" },
+  { name: "Slob", img: "Images/Traits/Slob.png" },
+  { name: "Vegetarian", img: "Images/Traits/Vegetarian.png" },
+  { name: "Animal Enthusiast", img: "Images/Traits/Animal_Enthusiast.png" },
+  { name: "Bro", img: "Images/Traits/Bro.png" },
+  { name: "Cat Lover", img: "Images/Traits/Cat_Lover.png" },
+  { name: "Cringe", img: "Images/Traits/Cringe.png" },
+  { name: "Dog Lover", img: "Images/Traits/Dog_Lover.png" },
+  { name: "Evil", img: "Images/Traits/Evil.png" },
+  { name: "Family-oriented", img: "Images/Traits/Family-oriented.png" },
+  { name: "Generous", img: "Images/Traits/Generous.png" },
+  { name: "Good", img: "Images/Traits/Good.png" },
+  { name: "Grouch", img: "Images/Traits/Grouch.png" },
+  { name: "Hates Children", img: "Images/Traits/Hates_Children.png" },
+  { name: "Horse Lover", img: "Images/Traits/Horse_Lover.png" },
+  { name: "Idealist", img: "Images/Traits/Idealist.png" },
+  { name: "Insider", img: "Images/Traits/Insider.png" },
+  { name: "Jealous", img: "Images/Traits/Jealous.png" },
+  { name: "Loner", img: "Images/Traits/Loner.png" },
+  { name: "Loyal", img: "Images/Traits/Loyal.png" },
+  { name: "Mean", img: "Images/Traits/Mean.png" },
+  { name: "Noncommittal", img: "Images/Traits/Noncommittal.png" },
+  { name: "Nosy", img: "Images/Traits/Nosy.png" },
+  { name: "Outgoing", img: "Images/Traits/Outgoing.png" },
+  { name: "Party Animal", img: "Images/Traits/Party_Animal.png" },
+  { name: "Plant Lover", img: "Images/Traits/Plant_Lover.png" },
+  { name: "Proper", img: "Images/Traits/Proper.png" },
+  { name: "Self-Absorbed", img: "Images/Traits/Self-Absorbed.png" },
+  { name: "Shady", img: "Images/Traits/Shady.png" },
+  { name: "Snob", img: "Images/Traits/Snob.png" },
+  { name: "Socially Awkward", img: "Images/Traits/Socially_Awkward.png" }
+];
+
+
+const aspirationsDeck = [
+  { name: "Friend of the Animals", img: "Images/Aspirations/Friend_of_the_Animals.png" },
+  { name: "Animal Whisperer", img: "Images/Aspirations/Animal_Whisperer.png" },
+  { name: "Best Friend of the Animals", img: "Images/Aspirations/Best_Friend_of_the_Animals.png" },
+  { name: "BFF of the Animals", img: "Images/Aspirations/BFF_of_the_Animals.png" },
+  { name: "Athletic Aspirations", img: "Images/Aspirations/Athletic_Aspirations.png" },
+  { name: "Bodybuilder", img: "Images/Aspirations/Bodybuilder.png" },
+  { name: "Long Lived", img: "Images/Aspirations/Long_Lived.png" },
+  { name: "Extreme Sports Enthusiast", img: "Images/Aspirations/Extreme_Sports_Enthusiast.png" },
+  { name: "Survival Instinct", img: "Images/Aspirations/Survival_Instinct.png" },
+  { name: "Championship Rider", img: "Images/Aspirations/Championship_Rider.png" },
+  { name: "Grand Champ Trainer", img: "Images/Aspirations/Grand_Champ_Trainer.png" },
+  { name: "Painter Extraordinaire", img: "Images/Aspirations/Painter_Extraordinaire.png" },
+  { name: "Musical Genius", img: "Images/Aspirations/Musical_Genius.png" },
+  { name: "Bestselling Author", img: "Images/Aspirations/Bestselling_Author.png" },
+  { name: "Master Actor", img: "Images/Aspirations/Master_Actor.png" },
+  { name: "Master Maker", img: "Images/Aspirations/Master_Maker.png" },
+  { name: "Lord Of The Knits", img: "Images/Aspirations/Lord_Of_The_Knits.png" },
+  { name: "Master Chef", img: "Images/Aspirations/Master_Chef.png" },
+  { name: "Master Mixologist", img: "Images/Aspirations/Master_Mixologist.png" },
+  { name: "Expert Nectar Maker", img: "Images/Aspirations/Expert_Nectar_Maker.png" },
+  { name: "Appliance Wiz", img: "Images/Aspirations/Appliance_Wiz.png" },
+  { name: "Batch Cook", img: "Images/Aspirations/Batch_Cook.png" },
+  { name: "Fabulously Wealthy", img: "Images/Aspirations/Fabulously_Wealthy.png" },
+  { name: "Mansion Baron", img: "Images/Aspirations/Mansion_Baron.png" },
+  { name: "Market Magnate", img: "Images/Aspirations/Market_Magnate.png" },
+  { name: "Booth Boss", img: "Images/Aspirations/Booth_Boss.png" },
+  { name: "Five-Star Property Owner", img: "Images/Aspirations/Five-Star_Property_Owner.png" },
+  { name: "Home Manager Maven", img: "Images/Aspirations/Home_Manager_Maven.png" },
+  { name: "Proprietary Legend", img: "Images/Aspirations/Proprietary_Legend.png" },
+  { name: "Renaissance Sim", img: "Images/Aspirations/Renaissance_Sim.png" },
+  { name: "Nerd Brain", img: "Images/Aspirations/Nerd_Brain.png" },
+  { name: "Computer Whiz", img: "Images/Aspirations/Computer_Whiz.png" },
+  { name: "Master Vampire", img: "Images/Aspirations/Master_Vampire.png" },
+  { name: "Archaeology Scholar", img: "Images/Aspirations/Archaeology_Scholar.png" },
+  { name: "Spellcraft & Sorcery", img: "Images/Aspirations/Spellcraft_&_Sorcery.png" },
+  { name: "Academic", img: "Images/Aspirations/Academic.png" },
+  { name: "Ghost Historian", img: "Images/Aspirations/Ghost_Historian.png" },
+  { name: "Ghost Whisperer", img: "Images/Aspirations/Ghost_Whisperer.png" },
+  { name: "Master Mentor", img: "Images/Aspirations/Master_Mentor.png" },
+  { name: "Motivational Speaker", img: "Images/Aspirations/Motivational_Speaker.png" },
+  { name: "Elixir Enthusiast", img: "Images/Aspirations/Elixir_Enthusiast.png" },
+  { name: "Well-Balanced Practitioner", img: "Images/Aspirations/Well-Balanced_Practitioner.png" },
+  { name: "City Native", img: "Images/Aspirations/City_Native.png" },
+  { name: "StrangerVille Mystery", img: "Images/Aspirations/StrangerVille_Mystery.png" },
+  { name: "Beach Life", img: "Images/Aspirations/Beach_Life.png" }
+];
+
+
+const careersDeck = [
+  { name: "Astronaut", img: "Images/Careers/Astronaut.png" },
+  { name: "Athlete", img: "Images/Careers/Athlete.png" },
+  { name: "Business", img: "Images/Careers/Business.png" },
+  { name: "Criminal", img: "Images/Careers/Criminal.png" },
+  { name: "Culinary", img: "Images/Careers/Culinary.png" },
+  { name: "Entertainer", img: "Images/Careers/Entertainer.png" },
+  { name: "Freelancer", img: "Images/Careers/Freelancer.png" },
+  { name: "Painter", img: "Images/Careers/Painter.png" },
+  { name: "Secret agent", img: "Images/Careers/Secret_agent.png" },
+  { name: "Style influencer", img: "Images/Careers/Style_influencer.png" },
+  { name: "Tech guru", img: "Images/Careers/Tech_guru.png" },
+  { name: "Writer", img: "Images/Careers/Writer.png" },
+  { name: "Doctor", img: "Images/Careers/Doctor.png" },
+  { name: "Detective", img: "Images/Careers/Detective.png" },
+  { name: "Scientist", img: "Images/Careers/Scientist.png" },
+  { name: "Critic", img: "Images/Careers/Critic.png" },
+  { name: "Politician", img: "Images/Careers/Politician.png" },
+  { name: "Social media", img: "Images/Careers/Social_media.png" },
+  { name: "Gardener", img: "Images/Careers/Gardener.png" },
+  { name: "Actor", img: "Images/Careers/Actor.png" },
+  { name: "Military", img: "Images/Careers/Military.png" },
+  { name: "Conservationist", img: "Images/Careers/Conservationist.png" },
+  { name: "Education", img: "Images/Careers/Education.png" },
+  { name: "Engineer", img: "Images/Careers/Engineer.png" },
+  { name: "Law", img: "Images/Careers/Law.png" },
+  { name: "Civil designer", img: "Images/Careers/Civil_designer.png" },
+  { name: "Salaryperson", img: "Images/Careers/Salaryperson.png" },
+  { name: "Interior decorator", img: "Images/Careers/Interior_decorator.png" },
+  { name: "Romance Consultant", img: "Images/Careers/Romance_Consultant.png" },
+  { name: "Reaper", img: "Images/Careers/Reaper.png" },
+  { name: "Undertaker", img: "Images/Careers/Undertaker.png" },
+  { name: "Naturopath", img: "Images/Careers/Naturopath.png" },
+  { name: "Self-Employed", img: "Images/Careers/Self-Employed.png" }
+];
+
+// === Utility Functions ===
+function shuffleArray(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+
+function draft(deck, n = 3) {
+  return shuffleArray(deck).slice(0, Math.min(n, deck.length));
+}
+
+function renderResults(container, picks) {
+  container.innerHTML = '';
+  picks.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.innerHTML = `
+      <img src="${item.img || ''}" alt="${item.name}">
+      <h3>${item.name}</h3>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// === Buttons Logic ===
+document.getElementById('draftTraitBtn').addEventListener('click', () => {
+  const picks = draft(traitsDeck, 3);
+  renderResults(document.getElementById('traitResults'), picks);
+});
+
+document.getElementById('draftAspirationBtn').addEventListener('click', () => {
+  const picks = draft(aspirationsDeck, 3);
+  renderResults(document.getElementById('aspirationResults'), picks);
+});
+
+document.getElementById('draftCareerBtn').addEventListener('click', () => {
+  const picks = draft(careersDeck, 3);
+  renderResults(document.getElementById('careerResults'), picks);
+});
+</script>
+
+</body>
+</html>
